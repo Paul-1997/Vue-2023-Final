@@ -2,3 +2,17 @@
 
 @import './base/base';
 @import './base/typography';
+
+// routerLink
+.nav__link {
+  .link--active {
+    font-weight: bold;
+    color: $red-700;
+    pointer-events: none;
+  }
+
+  :not(.link--active):hover {
+    transition: color 0.35s;
+    color: $red-500;
+  }
+}

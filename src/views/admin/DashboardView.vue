@@ -1,7 +1,9 @@
 <template>
-  <div style="display: flex; gap: 100px;">
+  <div class="d-flex min-vh-100" style="background-color: #faebd7;">
     <DashboardPanel />
-    <RouterView />
+    <div class="container-fluid p-md-4">
+      <RouterView />
+    </div>
   </div>
 </template>
 

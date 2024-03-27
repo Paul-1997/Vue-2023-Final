@@ -14,7 +14,7 @@
         <label for="userPassword" class="text-secondary">Password</label>
       </div>
       <div class="text-center mb-4">
-        <button type="button" class="login__btn btn btn-primary text-secondary col-8 px-3 mb-3" @click="login">
+        <button type="button" class="login__btn btn btn-primary text-secondary col-8 px-3 mb-3" @click="doLogin">
           登入
         </button>
         <div class="backToFront">
@@ -90,10 +90,8 @@ input {
 </style>
 
 <script>
-import axios from 'axios';
-import Cookies from 'js-cookie';
-
-const { VITE_APP_API_URL: base } = import.meta.env;
+import userStore from '@/stores/user';
+import { mapActions } from 'pinia';
 
 export default {
   data() {
@@ -108,11 +106,12 @@ export default {
     };
   },
   methods: {
+    ...mapActions(userStore, ['login']),
     clearErrMsg() {
       this.isEmptyInvalid = false;
       if (this.errMsg !== '') this.errMsg = '';
     },
-    async login() {
+    async doLogin() {
       const { email, password } = this.user;
       if (email === '' || password === '') {
         this.isEmptyInvalid = true;
@@ -121,20 +120,14 @@ export default {
       }
       try {
         this.onLoading = true;
-        const result = await axios.post(`${base}/v2/admin/signin`, { username: email, password });
-        if (result.data.success) {
-          const { token, expired } = result.data;
-          this.onLoading = false;
-          // 寫入資訊後跳轉頁面
-          Cookies.set('accessToken', token, { expires: expired });
-          localStorage.setItem('isLogin', true);
-          this.$router.push('/admin');
-        }
-      } catch (err) {
-        this.onLoading = false;
-        const { status } = err.response;
+        // eslint-disable-next-line no-unused-vars
+        const result = await this.login({ username: email, password });
+      } catch (error) {
+        const { status } = error.response;
 
         if (status === 400) this.errMsg = '信箱或密碼有誤！';
+      } finally {
+        this.onLoading = false;
       }
     },
   },
