@@ -22,5 +22,6 @@ module.exports = {
   plugins: ['vue'],
   rules: {
     'no-plusplus': 'off',
+    'max-len': ['error', 250],
   },
 };

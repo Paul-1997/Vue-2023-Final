@@ -1,21 +1,67 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
+  linkExactActiveClass: 'link--active',
   routes: [
+    // front
     {
       path: '/',
-      name: 'home',
-      component: HomeView,
+      component: () => import('../views/front/FrontView.vue'),
+      children: [
+        {
+          path: '/',
+          name: 'home',
+          component: () => import('../views/front/HomeView.vue'),
+        },
+        {
+          path: 'about',
+          name: 'about',
+          component: () => import('../views/front/AboutView.vue'),
+        },
+        {
+          path: 'order',
+          name: 'order',
+          component: () => import('../views/front/OrderView.vue'),
+        },
+        {
+          path: 'products',
+          name: 'products',
+          component: () => import('../views/front/ProductsView.vue'),
+        },
+        //   {
+        //     path: 'products/:id',
+        //     name: 'productDetail',
+        //     component: () => import('../views/front/ProductDetailView.vue'),
+        //   },
+      ],
+    },
+    // dashboard
+    {
+      path: '/admin',
+      component: () => import('../views/admin/DashboardView.vue'),
+      children: [
+        {
+          path: '/admin',
+          component: () => import('../views/admin/DashboardHomeView.vue'),
+        },
+        {
+          path: 'products',
+          component: () => import('../views/admin/DashboardProductView.vue'),
+        },
+        {
+          path: 'orders',
+          component: () => import('../views/admin/DashboardOrderView.vue'),
+        },
+        {
+          path: 'coupons',
+          component: () => import('../views/admin/DashboardCouponView.vue'),
+        },
+      ],
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue'),
+      path: '/login',
+      component: () => import('../views/LoginView.vue'),
     },
   ],
 });
