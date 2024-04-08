@@ -1,20 +1,38 @@
 <template>
   <div class="wrap">
-    <img class="login__img mx-auto" src="/logo.png" alt="logo">
+    <img class="login__img mx-auto" src="/logo.png" alt="logo" />
     <h1 class="login__title h1 mb-4 text-center text-secondary">管理者登入</h1>
     <form id="loginForm" action="post" class="p-4 mx-auto">
       <div class="form-floating mb-3">
-        <input type="email" class="form-control" id="userEmail" placeholder="請輸入帳號" v-model="user.email"
-          @input="clearErrMsg" :class="{ 'is-invalid': isEmptyInvalid && user.email === '' }">
+        <input
+          type="email"
+          class="form-control"
+          id="userEmail"
+          placeholder="請輸入帳號"
+          v-model="user.email"
+          @input="clearErrMsg"
+          :class="{ 'is-invalid': isEmptyInvalid && user.email === '' }"
+        />
         <label for="userEmail" class="text-secondary">Email address</label>
       </div>
       <div class="form-floating mb-4">
-        <input type="password" class="form-control" id="userPassword" placeholder="請輸入密碼" v-model="user.password"
-          @input="clearErrMsg" :class="{ 'is-invalid': isEmptyInvalid && user.password === '' }">
+        <input
+          type="password"
+          class="form-control"
+          id="userPassword"
+          placeholder="請輸入密碼"
+          v-model="user.password"
+          @input="clearErrMsg"
+          :class="{ 'is-invalid': isEmptyInvalid && user.password === '' }"
+        />
         <label for="userPassword" class="text-secondary">Password</label>
       </div>
       <div class="text-center mb-4">
-        <button type="button" class="login__btn btn btn-primary text-secondary col-8 px-3 mb-3" @click="doLogin">
+        <button
+          type="button"
+          class="login__btn btn btn-primary text-secondary col-8 px-3 mb-3"
+          @click="doLogin"
+        >
           登入
         </button>
         <div class="backToFront">
@@ -55,7 +73,7 @@ input {
   }
 
   &__title {
-    text-shadow: .1rem 0 currentColor;
+    text-shadow: 0.1rem 0 currentColor;
     font-weight: 900;
   }
 
@@ -68,7 +86,7 @@ input {
   color: var(--secondary);
 
   &:hover {
-    text-underline-offset: .2em;
+    text-underline-offset: 0.2em;
     text-decoration: underline;
   }
 }
@@ -79,7 +97,7 @@ input {
   border-radius: 100vw;
   border: 8px solid transparent;
   border-top-color: gray;
-  animation: spin .8s infinite linear;
+  animation: spin 0.8s infinite linear;
 }
 
 @keyframes spin {

@@ -1,3 +1,1 @@
-<template>
-  這是about
-</template>
+<template>這是about</template>

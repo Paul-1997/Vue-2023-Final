@@ -1,3 +1,1 @@
-<template>
-  這是order
-</template>
+<template>這是order</template>

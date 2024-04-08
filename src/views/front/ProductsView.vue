@@ -1,3 +1,1 @@
-<template>
-  這是product
-</template>
+<template>這是product</template>

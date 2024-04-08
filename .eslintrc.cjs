@@ -23,5 +23,11 @@ module.exports = {
   rules: {
     'no-plusplus': 'off',
     'max-len': ['error', 250],
+    'object-curly-newline': [
+      'error',
+      {
+        ImportDeclaration: 'never',
+      },
+    ],
   },
 };
