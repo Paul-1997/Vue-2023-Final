@@ -21,6 +21,7 @@ const userStore = defineStore('userStore', {
         const { status } = err.response;
         if (status === 403 || status === 401) {
           const result = await Swal.fire({
+            allowOutsideClick: false,
             title: '認證失效，請重新登入',
             icon: 'info',
             showConfirmButton: true,

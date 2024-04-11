@@ -1,0 +1,6 @@
+.interactive-button {
+  cursor: pointer;
+  &:active {
+    scale: 0.98;
+  }
+}
