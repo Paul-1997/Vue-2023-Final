@@ -34,8 +34,12 @@ export default defineStore('AdProductStore', {
       }
     },
     async updateProduct(product) {
+      const method = product.id ? 'put' : 'post';
+      const url = method === 'put' ? `v2/api/${path}/admin/product/${product.id}` : `v2/api/${path}/admin/product`;
       try {
-        const { data } = await FetchData(true, 'post', `v2/api/${path}/admin/product`, product);
+        console.log(product);
+        const { data } = await FetchData(true, method, url, { data: product });
+        console.log(data);
         if (data.success) {
           showStatusMsgToast();
           this.getProducts();
@@ -44,7 +48,7 @@ export default defineStore('AdProductStore', {
         showErrorMsg(error.response.message);
       }
     },
-    async deleteProduct({ id }) {
+    async deleteProduct(id) {
       try {
         const { data } = await FetchData(true, 'delete', `v2/api/${path}/admin/product/${id}`);
         if (data.success) this.getProducts();

@@ -3,14 +3,14 @@
     <h2 class="h2 mb-4 fw-bold text-secondary">所有商品</h2>
     <div class="position-relative">
       <input type="text" id="searchProduct" placeholder="請輸入想搜尋的產品" class="form-control border-secondary mb-4"
-        @input="searchProduct">
+        v-model="textSearch" @input="searchProduct">
       <span
         class="interactive-button material-symbols-outlined position-absolute end-0 top-0 fs-3 pt-1 pe-2 text-secondary">
         search
       </span>
     </div>
 
-    <div>
+    <div class="mb-4">
       <nav class="d-flex align-items-center">
         <ul class="filter list-unstyled d-flex border-bottom border-third">
           <li class="p-3" :class="productType === 'all' ? 'bg-third text-light' : ''">
@@ -38,11 +38,12 @@
               <option value="oldest">最舊</option>
             </select>
           </label>
-          <button class="btn btn-success px-4 py-2 mt-md-1" type="button">建立新產品</button>
+          <button class="btn btn-success px-4 py-2 mt-md-1" type="button"
+            @click="getModal('productModal')">建立新產品</button>
         </div>
       </nav>
       <ul class="row gy-3 list-unstyled pt-3">
-        <li v-for="product in sortProduct" :key="product.id" class="bg-white">
+        <li v-for="product in processedProduct" :key="product.id" class="bg-white">
           <div class="grid align-items-center" id="productGrid">
             <figure class="p-4">
               <img :src="product.imageUrl" :alt="`${product.title}首圖`">
@@ -52,46 +53,55 @@
             <p class="fs-4 text-secondary">{{ product.num }}</p>
             <p class="fs-4 text-secondary">{{ product.price }}</p>
             <div class="button-group">
-              <span class="material-symbols-outlined interactive-button me-3">
+              <span class="material-symbols-outlined interactive-button me-3"
+                @click="getModal('productModal', product)">
                 edit
               </span>
-              <span class="material-symbols-outlined interactive-button">
+              <span class="material-symbols-outlined interactive-button" @click="getModal('deleteModal', product)">
                 delete
               </span>
             </div>
           </div>
         </li>
+        <li v-if="!processedProduct.length" class="text-center text-secondary fs-2">
+          <div class="p-4 ">搜尋不到任何產品捏╮(╯_╰)╭</div>
+        </li>
       </ul>
     </div>
+    <PaginationComponent :pages="pagination" @emit-pagination="getProducts" />
+    <AdminProductModal :temp-product='tempProduct' @submit-product="updateProduct" ref="productModal" />
+    <AdminDeleteModal :target='tempProduct' :target-title="tempProduct.title" :id="tempProduct.id"
+      @delete-target="deleteProduct" ref="deleteModal" />
   </div>
-  <pre>
-    {{ products }}
-    <!-- {{ pagination }} -->
-  </pre>
 </template>
 
 <script>
-import AdProductStore from '@/stores/AdProducts';
 import { mapActions, mapState } from 'pinia';
-import { throttle } from '@/helper/helper';
+import AdProductStore from '@/stores/AdProducts';
+import PaginationComponent from '@/components/PaginationComponent.vue';
+import AdminProductModal from '@/components/AdminProductModal.vue';
+import AdminDeleteModal from '@/components/AdminDeleteModal.vue';
 
 export default {
   data() {
     return {
       productSort: 'category',
       productType: 'all',
+      textSearch: '',
+      productSearch: [],
+      tempProduct: {},
     };
   },
   computed: {
     ...mapState(AdProductStore, ['allProducts', 'products', 'pagination']),
-    sortProduct() {
+    processedProduct() {
       const type = this.productType;
       const data = [...this.products].filter((product) => {
         if (type === 'sellout') return product.num === 0;
         if (type === 'unable') return !product.is_enabled;
         return true;
       });
-      return data.sort((a, b) => {
+      const finalData = data.sort((a, b) => {
         if (this.productSort === 'lowPrice') return b.price - a.price;
         if (this.productSort === 'highPrice') return a.price - b.price;
         if (this.productSort === 'maxNum') return b.num - a.num;
@@ -101,16 +111,28 @@ export default {
         // default
         return a.category > b.category;
       });
+      return this.textSearch === '' ? finalData : finalData.filter((product) => product.title.includes(this.textSearch));
     },
   },
   methods: {
-    ...mapActions(AdProductStore, ['getProducts']),
-    searchProduct: throttle(this.doSearchProduct, 250),
-    doSearchProduct() {
+    ...mapActions(AdProductStore, ['getProducts', 'updateProduct', 'deleteProduct']),
+    searchProduct() {
+      if (this.textSearch.trim() === '') this.productSearch = '';
+      else this.productSearch = this.sortProduct.filter((product) => product.title.includes(this.textSearch));
+    },
+    getModal(target, data) {
+      this.tempProduct = {};
+      if (data) this.tempProduct = data;
+      this.$refs[target].openModal();
     },
   },
   mounted() {
     this.getProducts();
+  },
+  components: {
+    PaginationComponent,
+    AdminProductModal,
+    AdminDeleteModal,
   },
 };
 </script>
@@ -141,4 +163,3 @@ export default {
   overflow: hidden;
 }
 </style>
-@/helper/helper
