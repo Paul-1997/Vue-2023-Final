@@ -14,13 +14,13 @@
       <nav class="d-flex align-items-center">
         <ul class="filter list-unstyled d-flex border-bottom border-third">
           <li class="p-3" :class="productType === 'all' ? 'bg-third text-light' : ''">
-            <label for="allProductType"><input type="radio" name="productFilter" id="allProductType" class="d-none"
+            <label class="interactive" for="allProductType"><input type="radio" name="productFilter" id="allProductType" class="d-none"
                 v-model="productType" value="all" checked> 全部產品</label>
           </li>
-          <li class="p-3" :class="productType === 'sellout' ? 'bg-third text-light' : ''"><label
+          <li class="p-3" :class="productType === 'sellout' ? 'bg-third text-light' : ''"><label class="interactive"
               for="selloutProductType"><input type="radio" name="productFilter" id="selloutProductType" class="d-none"
                 v-model="productType" value="sellout"> 已售完</label></li>
-          <li class="p-3" :class="productType === 'unable' ? 'bg-third text-light' : ''"><label
+          <li class="p-3" :class="productType === 'unable' ? 'bg-third text-light' : ''"><label class="interactive"
               for="unableProductType"><input type="radio" name="productFilter" id="unableProductType" class="d-none"
                 v-model="productType" value="unable"> 尚未啟用</label></li>
         </ul>
