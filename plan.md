@@ -74,3 +74,9 @@ vuedraggable
 我是管理者可以新增編輯刪除產品
 我是管理者可以新增編輯刪除訂單
 我是管理者可以新增編輯刪除優惠卷
+
+
+
+
+bugToFix 
+1.adminOrder accordion icon切換過慢
